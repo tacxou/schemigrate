@@ -39,6 +39,7 @@ import type {
   SchemigrateBatchResult,
   SchemigrateCleanupOptions,
   SchemigrateCleanupResult,
+  SchemigrateDryRunResult,
   SchemigrateMigrationOptions,
   SchemigratePlan,
   SchemigratePluginOptions,
@@ -84,6 +85,11 @@ export interface SchemaVersionedModelMethods {
     targetVersion?: SchemaVersion,
     options?: SchemigrateBatchOptions,
   ): Promise<SchemigrateBatchResult>;
+  dryRun(
+    filter: FilterQuery<AnyDoc>,
+    targetVersion?: SchemaVersion,
+    options?: SchemigrateMigrationOptions,
+  ): Promise<SchemigrateDryRunResult[]>;
   findOutdatedDocuments(): Promise<AnyDoc[]>;
   findNewerDocuments(): Promise<AnyDoc[]>;
   rollbackMigrationById(
@@ -825,6 +831,40 @@ export function schemigratePlugin(
     );
 
     return result;
+  };
+
+  schema.statics.dryRun = async function (
+    filter: FilterQuery<AnyDoc>,
+    targetVersion?: SchemaVersion,
+    options: SchemigrateMigrationOptions = {},
+  ): Promise<SchemigrateDryRunResult[]> {
+    const model = this as AnyModel;
+    const target = targetVersion ?? currentVersion;
+
+    const docs: AnyDoc[] = await model
+      .find(filter ?? {})
+      .setOptions({ schemigrateCheck: false })
+      .lean<AnyDoc[]>()
+      .exec();
+
+    const results: SchemigrateDryRunResult[] = [];
+    for (const pojo of docs) {
+      const meta = await migratePojo(model, pojo, target, { ...options, dryRun: true });
+      results.push({
+        documentId: pojo._id === undefined ? undefined : String(pojo._id),
+        fromVersion: meta.fromVersion,
+        targetVersion: target,
+        plan: meta.plan,
+        snapshotsPreview: Object.fromEntries(
+          Object.entries(meta.snapshots).map(([stepKey, entry]) => [
+            stepKey,
+            { stepKey, ...entry },
+          ]),
+        ),
+        changesPreview: meta.changedFields,
+      });
+    }
+    return results;
   };
 
   schema.statics.findOutdatedDocuments = async function (): Promise<AnyDoc[]> {

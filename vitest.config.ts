@@ -8,6 +8,7 @@ export default defineConfig({
           name: 'unit',
           include: ['test/unit/**/*.spec.ts'],
           environment: 'node',
+          setupFiles: ['test/helpers/reflect-metadata.ts'],
         },
       },
       {
@@ -15,7 +16,7 @@ export default defineConfig({
           name: 'integration',
           include: ['test/integration/**/*.spec.ts'],
           environment: 'node',
-          setupFiles: ['test/helpers/mongo-setup.ts'],
+          setupFiles: ['test/helpers/reflect-metadata.ts', 'test/helpers/mongo-setup.ts'],
           hookTimeout: 60_000,
           testTimeout: 30_000,
         },

@@ -15,6 +15,13 @@ afterAll(async () => {
   await mongo?.stop();
 });
 
+export function getMongoUri(): string {
+  if (!mongo) {
+    throw new Error('MongoMemoryServer is not started');
+  }
+  return mongo.getUri();
+}
+
 export async function clearDatabase(): Promise<void> {
   const collections = mongoose.connection.collections;
   await Promise.all(
