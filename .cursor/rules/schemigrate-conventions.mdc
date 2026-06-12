@@ -1,0 +1,44 @@
+---
+description: Conventions Schemigrate — plugin Mongoose et intégration NestJS
+globs: src/**/*,test/**/*
+alwaysApply: false
+---
+
+# Schemigrate — conventions de code
+
+Cahier des charges : `SPEC.md`. Charte complète : `CLAUDE.md`.
+
+## Invariants métier
+
+- **Jamais** de migration implicite au `find` — lever `OutdatedDocumentError` ou `UnsupportedSchemaVersionError`.
+- Champs réservés préfixés `__` ; ne pas détourner `__v`.
+- Sync explicite : `migrateMany`, `migrateById`, CLI, ou bootstrap opt-in (`autoRunOnBootstrap`).
+- Bypass lecture : `.setOptions({ schemigrateCheck: false })` au niveau requête uniquement.
+
+## Séparation des exports
+
+```ts
+// ✅ Cœur Mongoose
+import { schemigratePlugin } from '@tacxou/schemigrate';
+
+// ✅ NestJS — sous-chemin dédié
+import { SchemigrateModule } from '@tacxou/schemigrate/nestjs';
+
+// ❌ NestJS depuis le point d'entrée principal
+import { SchemigrateModule } from '@tacxou/schemigrate';
+```
+
+Le dossier `src/nestjs/` **ne doit pas** être importé par le cœur (`src/plugin`, `src/engine`, etc.).
+
+## TypeScript
+
+- Mode strict ; API publiques typées explicitement.
+- Erreurs typées dans `src/errors/` avec propriétés structurées (cf. SPEC §26).
+- Fichiers en `kebab-case` ; classes en `PascalCase`.
+
+## Tests
+
+- Unitaire : Vitest, sans MongoDB (`test/unit/`).
+- Intégration : `mongodb-memory-server` (`test/integration/`).
+- Fixtures partagées : `test/fixtures/versions.ts`, `container.migrations.ts`.
+- Chaque erreur typée et comportement critique (SPEC §45.7) : au moins un test dédié.

@@ -1,0 +1,57 @@
+# Git commit messages (bouton ✨ Generate Commit Message)
+
+Respecter **strictement** ces règles. Référence complète : `docs/conventions/conventional-commits.md`.
+
+## Format obligatoire
+
+```
+type(scope): description
+```
+
+- **Langue** : anglais uniquement (sujet et corps).
+- **Sujet** : impératif, minuscule après `:`, **sans point final**, ≤ 72 caractères.
+- **Types autorisés** (uniquement) : `feat`, `fix`, `docs`, `style`, `refactor`, `perf`, `test`, `build`, `ci`, `chore`, `revert`.
+
+## Scope — enum (critique)
+
+Si un scope est présent, il **doit** être exactement l'un de :
+
+`core` · `nestjs` · `cli` · `deps` · `ci` · `root`
+
+**Interdit** — scopes inventés : `plugin`, `engine`, `mongoose`, `scripts`, `release`, `test`, `spec`, ou tout autre hors enum.
+
+Mapper les chemins modifiés :
+
+| Fichiers touchés | Scope |
+|------------------|-------|
+| `src/` hors `src/nestjs/` et `src/cli/` | `core` |
+| `src/nestjs/` | `nestjs` |
+| `src/cli/` | `cli` |
+| `.github/`, workflows CI | `ci` |
+| `package.json`, lockfile, bumps de dépendances | `deps` |
+| `SPEC.md`, `docs/`, règles IA, config racine, `vitest.config.ts` | `root` |
+
+Toujours inclure un scope valide quand un périmètre domine. L'omettre seulement si le changement est réellement transversal.
+
+## Breaking changes
+
+- Sujet : `feat(core)!: remove legacy migration API`
+- Ou pied : `BREAKING CHANGE: …`
+
+## Exemples valides
+
+```
+feat(core): add optimistic lock on migrateById
+fix(nestjs): wire SchemigrateService logger to Nest Logger
+test(core): cover OutdatedDocumentError on findMany
+docs(root): align SPEC with snapshot rollback semantics
+chore(root): add conventional commit rules for AI assistants
+```
+
+## Anti-exemples
+
+```
+❌ feat(plugin): add migration engine     → scope invalide (utiliser core)
+❌ Add schemigrate plugin                  → pas de type/scope
+❌ feat(core): add plugin.                 → point final interdit
+```

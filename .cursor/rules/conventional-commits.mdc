@@ -1,0 +1,39 @@
+---
+description: Messages de commit Conventional Commits (Schemigrate)
+alwaysApply: true
+---
+
+# Conventional Commits
+
+Référence complète : `docs/conventions/conventional-commits.md`.
+
+## Format obligatoire
+
+```
+<type>(<scope>): <description impérative en anglais, ≤ 72 car., sans point final>
+```
+
+Types : `feat` · `fix` · `docs` · `style` · `refactor` · `perf` · `test` · `build` · `ci` · `chore` · `revert`
+
+Scopes : `core` · `nestjs` · `cli` · `deps` · `ci` · `root` (ou omis si transversal)
+
+Breaking : `type(scope)!:` ou pied `BREAKING CHANGE:`.
+
+## SemVer stricte
+
+Versions `MAJOR.MINOR.PATCH` uniquement ([SemVer 2.0.0](https://semver.org/)). Bump : `fix` → PATCH, `feat` → MINOR, breaking → MAJOR ; `docs`/`chore`/… → aucun bump. Signaler le bump attendu si pertinent.
+
+## Comportement agent
+
+- Proposer le message ; ne pas committer/pousser sans demande explicite.
+- Un commit = une intention ; pas de `WIP` ni sujets vagues (`update`, `fix stuff`).
+- Corps optionnel pour le *pourquoi* ; pied `Refs: #N` / `Closes: #N` si issue liée.
+- Bouton ✨ Generate Commit Message (SCM) : lit **uniquement** `.cursorrules` à la racine.
+
+## Exemples
+
+```
+feat(core): add optimistic lock on migrateById
+fix(nestjs): wire SchemigrateService to Nest Logger
+test(core): cover OutdatedDocumentError on findMany
+```
