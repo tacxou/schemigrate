@@ -28,6 +28,14 @@ export {
 
 export { createSchemaVersion } from './utils/create-schema-version.js';
 
+// CLI configuration helper (SPEC §42.7). Type-only + identity function:
+// pulls no runtime dependency into the main entry point.
+export { defineSchemigrateConfig } from './cli/define-config.js';
+export type {
+  SchemigrateCliConfig,
+  SchemigrateCliModelConfig,
+} from './cli/define-config.js';
+
 export {
   SchemigrateError,
   MissingSchemaVersionError,

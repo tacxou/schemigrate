@@ -14,7 +14,15 @@
       "types": "./dist/nestjs/index.d.ts",
       "import": "./dist/nestjs/index.js",
       "require": "./dist/nestjs/index.cjs"
+    },
+    "./cli": {
+      "types": "./dist/cli/index.d.ts",
+      "import": "./dist/cli/index.js",
+      "require": "./dist/cli/index.cjs"
     }
+  },
+  "bin": {
+    "schemigrate": "./dist/cli/bin.js"
   },
   "files": [
     "dist"
