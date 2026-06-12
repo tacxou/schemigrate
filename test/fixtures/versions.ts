@@ -1,0 +1,4 @@
+// Reference timestamps from SPEC §4 — shared by every test.
+export const CONTAINER_SCHEMA_V1 = 1781251200000; // 2026-06-12T08:00:00.000Z
+export const CONTAINER_SCHEMA_V2 = 1781856000000; // 2026-06-19T08:00:00.000Z
+export const CONTAINER_SCHEMA_V3 = 1782460800000; // 2026-06-26T08:00:00.000Z
