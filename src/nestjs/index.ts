@@ -21,6 +21,22 @@ export type {
 export { adaptNestLogger, resolveModuleLogger } from './nest-logger.adapter.js';
 
 export {
+  Schemigrate,
+  getSchemigrateMetadata,
+  applySchemigratePlugin,
+} from './schemigrate.decorator.js';
+
+export {
+  SchemigrateHealthIndicator,
+  SchemigrateHealthCheckError,
+} from './schemigrate.health.js';
+export type {
+  SchemigrateHealthResult,
+  SchemigrateModelHealth,
+  SchemigrateHealthOptions,
+} from './schemigrate.health.js';
+
+export {
   OutdatedDocumentException,
   UnsupportedSchemaVersionException,
   MissingSchemaVersionException,

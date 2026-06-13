@@ -150,6 +150,42 @@ throw toNestSchemigrateException(error); // OutdatedDocumentError -> 409 Conflic
 
 The core package never depends on `@nestjs/*`; the integration lives only under the `/nestjs` subpath.
 
+### Decorator (optional)
+
+```ts
+import { Schemigrate, applySchemigratePlugin } from '@tacxou/schemigrate/nestjs';
+
+@Schemigrate({ currentVersion: CONTAINER_SCHEMA_V2, migrations })
+@Schema({ timestamps: true })
+export class Container { /* … */ }
+
+export const ContainerSchema = applySchemigratePlugin(
+  SchemaFactory.createForClass(Container),
+  Container,
+);
+```
+
+Requires `import 'reflect-metadata';` at your application entry point.
+
+### Healthcheck (optional, `@nestjs/terminus`)
+
+```ts
+import { SchemigrateHealthIndicator } from '@tacxou/schemigrate/nestjs';
+
+@Get('health')
+@HealthCheck()
+check() {
+  return this.health.check([
+    () => this.schemigrateHealth.isHealthy('schemigrate', {
+      models: [this.containerModel],     // failOnOutdated/Newer/Failed configurable
+    }),
+  ]);
+}
+// down details: { schemigrate: { status, models: { Container: { outdatedDocuments, newerDocuments, … } } } }
+```
+
+`@nestjs/terminus` is an optional peer dependency — install it only if you use the healthcheck.
+
 ## CLI
 
 Create `schemigrate.config.ts` (or `.mjs`) at the project root:
