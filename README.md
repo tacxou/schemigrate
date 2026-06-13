@@ -238,4 +238,4 @@ Prefer a single `schemigrate up` job over `autoRunOnBootstrap` with multiple rep
 
 ## License
 
-MIT
+BSD 3-Clause — see [LICENSE](LICENSE).

@@ -2,7 +2,23 @@
   "name": "@tacxou/schemigrate",
   "version": "0.1.0",
   "description": "Mongoose plugin to manage MongoDB document structure versions with explicit, timestamp-based migrations",
-  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tacxou/schemigrate.git"
+  },
+  "author": "tacxou <12997062+tacxou@users.noreply.github.com> (https://github.com/tacxou)",
+  "contributors": [
+    {
+      "name": "tacxou",
+      "email": "12997062+tacxou@users.noreply.github.com",
+      "url": "https://github.com/tacxou"
+    },
+    {
+      "name": "Contributors",
+      "url": "https://github.com/tacxou/schemigrate/graphs/contributors"
+    }
+  ],
+  "license": "BSD-3-Clause",
   "type": "module",
   "exports": {
     ".": {
@@ -29,6 +45,7 @@
   ],
   "scripts": {
     "build": "tsup",
+    "postbuild": "node scripts/postbuild.mjs",
     "prepublishOnly": "yarn typecheck && yarn test && yarn build",
     "test": "vitest run",
     "test:unit": "vitest run --project unit",
@@ -73,5 +90,10 @@
   },
   "engines": {
     "node": ">=18"
-  }
+  },
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org"
+  },
+  "packageManager": "yarn@1.22.22+sha512.a6b2f7906b721bba3d67d4aff083df04dad64c399707841b7acf00f6b133b7ac24255f2652fa22ae3534329dc6180534e98d17432037ff6fd140556e2bb3137e"
 }
