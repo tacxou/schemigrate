@@ -1,0 +1,27 @@
+# CI pipeline (SPEC §49.5), adapted to Yarn.
+name: test
+
+on: [push, pull_request]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: yarn
+
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile
+
+      - name: Typecheck
+        run: yarn typecheck
+
+      - name: Tests with coverage (unit + integration)
+        run: yarn test:coverage
+
+      - name: Build (ESM + CJS + d.ts)
+        run: yarn build

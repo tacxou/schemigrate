@@ -39,6 +39,8 @@ export async function loadCliConfig(
 
   let moduleExports: { default?: SchemigrateCliConfig } & SchemigrateCliConfig;
   try {
+    // Kept as a real dynamic import in the CJS build too (tsup marks
+    // dynamic-import as supported), so .mjs/.ts configs load everywhere.
     moduleExports = await import(pathToFileURL(path).href);
   } catch (cause) {
     const hint =
